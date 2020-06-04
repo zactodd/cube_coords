@@ -29,7 +29,7 @@ setup(
     url="https://github.com/zactodd/cube_coords",
     author="Zachary Todd",
     description="cube coord system for hex grids.",
-    packages=["cube_coords.py"],
+    packages=["cube_coords"],
     install_requires=install_reqs,
     include_package_data=True,
     python_requires=">=3.4",
