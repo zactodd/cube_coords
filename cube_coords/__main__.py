@@ -1,5 +1,5 @@
 from itertools import combinations
-import math
+import numpy as np
 
 # The two 120 degree separated flows.
 CW_CW_FLOW = {(1, -1, 0), (0, 1, -1), (-1, 0, 1)}
@@ -273,6 +273,15 @@ def spiral_order(coords):
     :return: A sorted list of cube coords.
     """
     return sorted(coords, key=lambda c: (distance_from_centre(c), clockwise_centre_angle(c)), reverse=True)
+
+
+def rows_order(coords):
+    """
+    Orders the vertical and horizontal position.
+    :param coords: A iterable of cube coords.
+    :return: A sorted list of cube coords.
+    """
+    return sorted(coords, key=lambda c: (c[1], c[0]))
 
 
 def cube_round(c):
