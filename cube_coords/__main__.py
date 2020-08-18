@@ -36,13 +36,12 @@ def neighbours(c, k=1):
     :param k: The distance max distance of neighbours.
     :return: A set of cube coords.
     """
-    cx, cz, cy = c
     if k == 1:
-        return {(cx + x, cz + z, cy + y) for x, y, z in DIRECTIONS}
+        return {add(c, d) for d in DIRECTIONS}
     else:
-        return {
-            (cx + x, cz - x - y, cy + y) for x in range(-k, k + 1) for y in range(max(-k, -x - k), min(k, k - x) + 1)
-        }
+        cx, cz, cy = c
+        return {(cx + x, cz - x - y, cy + y) for x in range(-k, k + 1)
+                for y in range(max(-k, -x - k), min(k, k - x) + 1)}
 
 
 def neighbours_from_centre(k=1):
@@ -157,16 +156,14 @@ def triples_from_neighbours(a, b):
     :return: Two cube coords which form triples with a and b.
     """
     assert is_neighbour(a, b), f"Cubes {a} and {b} to be neighbours to have triples."
-    ax, az, ay = a
-    bx, bz, by = b
-    dx, dz, dy = bx - ax, bz - az, by - ay
+    dx, dz, dy = add(b, -a)
     if dx == 0:
         triples_diff = (dz, 0, dy), (dy, dz, 0)
     elif dz == 0:
         triples_diff = (dx, dy, 0), (0, dx, dy)
     else:
         triples_diff = (dx, 0, dz), (0, dz, dx)
-    return ((ax + x, az + z, ay + y) for x, z, y in triples_diff)
+    return (add(c, a) for c in triples_diff)
 
 
 def triples(c):
@@ -175,9 +172,7 @@ def triples(c):
     :param c: A cube coord x, z, y.
     :return: A set of cube coord triples.
     """
-    cx, cz, cy = c
-    ns = [(cx + x, cz + z, cy + y) for x, z, y in CW_CW_FLOW]
-    return {frozenset({c, n, t}) for n in ns for t in triples_from_neighbours(c, n)}
+    return {frozenset({c, n, t}) for n in (add(c, d) for d in CW_CW_FLOW) for t in triples_from_neighbours(c, n)}
 
 
 def edge_neighbours(edge):
