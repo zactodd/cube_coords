@@ -1,2 +1,2 @@
 # cube_coords
-cube coordinates for hex grids
+Cube coordinates for hex grids. 
